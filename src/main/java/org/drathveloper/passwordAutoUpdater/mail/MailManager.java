@@ -1,11 +1,8 @@
 package org.drathveloper.passwordAutoUpdater.mail;
 
-import com.sun.mail.imap.IMAPFolder;
 import org.drathveloper.passwordAutoUpdater.model.ApplicationDAO;
 
 import javax.mail.*;
-import javax.mail.event.MessageCountEvent;
-import javax.mail.event.MessageCountListener;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.search.FlagTerm;
 import java.io.FileInputStream;

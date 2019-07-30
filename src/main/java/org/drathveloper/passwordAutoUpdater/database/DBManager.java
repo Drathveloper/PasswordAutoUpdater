@@ -30,7 +30,7 @@ public class DBManager {
             Connection conn = JDBC.getConnection();
             try {
                 for(ApplicationDAO app : userList){
-                    String sql = "UPDATE " + updateTable + " SET password = ? WHERE user = ?";
+                    String sql = "UPDATE " + updateTable + " SET password = ? WHERE username = ?";
                     PreparedStatement p =conn.prepareStatement(sql);
                     p.setString(1, app.getPassword());
                     p.setString(2, app.getUsername());

@@ -48,7 +48,6 @@ public class MailManager {
                 userList.addAll(foundUsers);
             }
         }
-        emailFolder.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
         emailFolder.close();
         return userList;
     }
@@ -77,18 +76,27 @@ public class MailManager {
     }
 
     private String getBody(Object messageContent) throws MessagingException, IOException {
-        if(MimeMultipart.class.isInstance(messageContent)){
-            MimeMultipart content = (MimeMultipart) messageContent;
-            for(int i=0; i < content.getCount(); i++){
-                BodyPart part = content.getBodyPart(i);
-                if(part.isMimeType(MailConstants.HTML_MIME) || part.isMimeType(MailConstants.TEXT_MIME)){
-                    return (String) part.getContent();
-                } else {
-                    return this.getBody(part.getContent());
-                }
+        if(messageContent!=null){
+            if(messageContent instanceof MimeMultipart){
+                MimeMultipart content = (MimeMultipart) messageContent;
+                return this.getStringFromParts(content);
+            } else if(messageContent instanceof String) {
+                return (String) messageContent;
             }
-        } else if(String.class.isInstance(messageContent)){
-            return (String) messageContent;
+        }
+        return null;
+    }
+
+    private String getStringFromParts(MimeMultipart content) throws IOException, MessagingException {
+        for(int i=0; i<content.getCount(); i++){
+            BodyPart part = content.getBodyPart(i);
+            if(part.isMimeType(MailConstants.HTML_MIME) && part.isMimeType(MailConstants.TEXT_MIME)){
+                return (String) part.getContent();
+            }
+            String out = this.getBody(part.getContent());
+            if(out!=null){
+                return out;
+            }
         }
         return null;
     }

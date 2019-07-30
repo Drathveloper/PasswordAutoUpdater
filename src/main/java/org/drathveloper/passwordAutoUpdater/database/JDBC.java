@@ -20,8 +20,6 @@ public class JDBC {
             Properties props = new Properties();
             FileInputStream propsFile = new FileInputStream(configPath + PROPERTIES_FILE);
             props.load(propsFile);
-            //String driver = props.getProperty(DBConstants.DATABASE_DRIVER);
-            //Class.forName(driver);
             String url = props.getProperty(DBConstants.DATABASE_URL);
             String name = props.getProperty(DBConstants.DATABASE_NAME);
             String user = props.getProperty(DBConstants.USER_PROPERTY);
@@ -30,9 +28,9 @@ public class JDBC {
             connection = DriverManager.getConnection(url + ":" + port + "/" + name, user, password);
             propsFile.close();
         } catch (SQLException ex){
-            ex.printStackTrace();
+            System.out.print("Problem creating connection.\nMessage: " + ex.getMessage());
         } catch (IOException ex){
-            ex.printStackTrace();
+            System.out.print("Problem loading properties.\nMessage: " + ex.getMessage());
         }
     }
 
